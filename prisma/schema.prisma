@@ -9,6 +9,108 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model Artist {
+  id           Int             @id @default(autoincrement())
+  uuid         String          @unique @default(uuid())
+  name         String
+  imageUrl     String?
+  genre        String?
+  bio          String?
+  instagramUrl String?
+  facebookUrl  String?
+  twitterUrl   String?
+  spotifyUrl   String?
+  websiteUrl   String?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  events       ArtistOnEvent[]
+}
+
+model Event {
+  id          Int              @id @default(autoincrement())
+  uuid        String           @unique @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  venue       String
+  capacity    Int
+  address     String?
+  city        String
+  price       Decimal
+  eventUrl    String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  artists     ArtistOnEvent[]
+  bookings    BookingOnEvent[]
+}
+
+model ArtistOnEvent {
+  artist   Artist @relation(fields: [artistId], references: [id])
+  artistId Int // relation scalar field (used in the `@relation` attribute above)
+  event    Event  @relation(fields: [eventId], references: [id])
+  eventId  Int // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([artistId, eventId])
+}
+
+model Booking {
+  id            Int              @id @default(autoincrement())
+  transactionId String           @unique @default(uuid())
+  date          DateTime
+  status        BookingStatus    @default(PENDING)
+  seats         Int
+  paymentAmount Decimal
+  paymentStatus PaymentStatus
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  events        BookingOnEvent[]
+  Customer      Customer         @relation(fields: [customerId], references: [id])
+  eventId       Int
+  customerId    Int
+}
+
+model BookingOnEvent {
+  booking   Booking @relation(fields: [bookingId], references: [id])
+  bookingId Int // relation scalar field (used in the `@relation` attribute above)
+  event     Event   @relation(fields: [eventId], references: [id])
+  eventId   Int // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([bookingId, eventId])
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  uuid     String    @unique @default(uuid())
+  email    String
+  password String
+  Customer Customer?
+}
+
+model Customer {
+  id          Int       @id @default(autoincrement())
+  uuid        String    @unique @default(uuid())
+  firstName   String
+  lastName    String
+  country     String
+  postalCode  String
+  phoneNumber String?
+  Booking     Booking[]
+  User        User      @relation(fields: [userId], references: [id])
+  userId      Int       @unique
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
 }
