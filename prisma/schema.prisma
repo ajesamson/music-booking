@@ -71,6 +71,8 @@ model Booking {
   updatedAt     DateTime         @updatedAt
   events        BookingOnEvent[]
   eventId       Int
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int
 }
 
 model BookingOnEvent {
@@ -83,11 +85,13 @@ model BookingOnEvent {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  uuid     String   @unique @default(uuid())
+  id       Int       @id @default(autoincrement())
+  uuid     String    @unique @default(uuid())
   email    String
   password String
   profile  Profile?
+  role     Role      @default(CUSTOMER)
+  bookings Booking[]
 }
 
 model Profile {
@@ -111,4 +115,10 @@ enum PaymentStatus {
   PENDING
   PAID
   FAILED
+}
+
+enum Role {
+  CUSTOMER
+  ARTIST
+  ADMIN
 }
