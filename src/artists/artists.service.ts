@@ -4,9 +4,8 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { plainToInstance } from 'class-transformer';
 import { ArtistResponseDto } from './dto/artist-response.dto';
-import { Artist } from '@prisma/client';
 import { errorResponse, successResponse } from 'src/utils/response.util';
-import { ApiResponse } from 'src/dto/api-response.dto';
+import { ApiResponse } from 'src/common/dto/api-response.dto';
 
 @Injectable()
 export class ArtistsService {
@@ -23,7 +22,7 @@ export class ArtistsService {
       'Artist created successfully',
       plainToInstance(ArtistResponseDto, artist, {
         excludeExtraneousValues: true,
-      }) as ArtistResponseDto,
+      }),
     );
   }
 
@@ -34,16 +33,31 @@ export class ArtistsService {
       'Artists retrieved successfully',
       plainToInstance(ArtistResponseDto, artists, {
         excludeExtraneousValues: true,
-      }) as ArtistResponseDto[],
+      }),
     );
   }
 
-  async findOne(id: string): Promise<ApiResponse<ArtistResponseDto>> {
+  async getArtistId(uuid: string): Promise<{ id: number }> {
     const artist = await this.databaseService.artist.findUnique({
       where: {
-        uuid: id,
+        uuid,
+      },
+      select: {
+        id: true,
       },
     });
+    if (!artist) {
+      throw new NotFoundException(
+        errorResponse(`Artist with ID ${uuid} not found`),
+      );
+    }
+
+    return artist;
+  }
+
+  async findOne(id: string): Promise<ApiResponse<ArtistResponseDto>> {
+    const artist = await this.getArtistId(id);
+
     if (!artist) {
       throw new NotFoundException(
         errorResponse(`Artist with ID ${id} not found`),
@@ -54,8 +68,21 @@ export class ArtistsService {
       'Artist retrieved successfully',
       plainToInstance(ArtistResponseDto, artist, {
         excludeExtraneousValues: true,
-      }) as ArtistResponseDto,
+      }),
     );
+  }
+
+  async findManyByUuid(ids: string[]): Promise<{ id: number }[]> {
+    const artists = await this.databaseService.artist.findMany({
+      where: {
+        uuid: {
+          in: ids,
+        },
+      },
+      select: { id: true },
+    });
+
+    return artists;
   }
 
   async update(
@@ -74,7 +101,7 @@ export class ArtistsService {
       'Artist updated successfully',
       plainToInstance(ArtistResponseDto, updatedArtist, {
         excludeExtraneousValues: true,
-      }) as ArtistResponseDto,
+      }),
     );
   }
 
@@ -90,7 +117,7 @@ export class ArtistsService {
       'Artist deleted successfully',
       plainToInstance(ArtistResponseDto, deletedArtist, {
         excludeExtraneousValues: true,
-      }) as ArtistResponseDto,
+      }),
     );
   }
 }
