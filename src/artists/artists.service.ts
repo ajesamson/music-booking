@@ -6,6 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { ArtistResponseDto } from './dto/artist-response.dto';
 import { errorResponse, successResponse } from 'src/utils/response.util';
 import { ApiResponse } from 'src/common/dto/api-response.dto';
+import { EventsForArtistDto } from './dto/events-for-artist.dto';
 
 @Injectable()
 export class ArtistsService {
@@ -122,6 +123,46 @@ export class ArtistsService {
       plainToInstance(ArtistResponseDto, deletedArtist, {
         excludeExtraneousValues: true,
       }),
+    );
+  }
+
+  async findEventsForArtist(
+    id: string,
+  ): Promise<ApiResponse<EventsForArtistDto>> {
+    const artist = await this.databaseService.artist.findUnique({
+      where: { uuid: id },
+      include: {
+        events: {
+          include: {
+            event: true,
+          },
+        },
+      },
+    });
+
+    if (!artist) {
+      throw new NotFoundException(
+        errorResponse(`Artist with ID ${id} not found`),
+      );
+    }
+
+    return successResponse(
+      'Artist events retrieved successfully',
+      plainToInstance(
+        EventsForArtistDto,
+        {
+          ...artist,
+          events: artist.events.map((ev) => {
+            return {
+              ...ev.event,
+              price: ev.event.price.toString(),
+            };
+          }),
+        },
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
     );
   }
 }

@@ -15,6 +15,7 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ArtistResponseDto } from './dto/artist-response.dto';
 import { ApiResponse } from 'src/common/dto/api-response.dto';
 import { PrismaClientExceptionFilter } from 'src/common/filters/prisma-client-exception/prisma-client-exception.filter';
+import { EventsForArtistDto } from './dto/events-for-artist.dto';
 
 @Controller('artists')
 @ApiTags('artists')
@@ -57,5 +58,13 @@ export class ArtistsController {
   @ApiOkResponse({ type: ArtistResponseDto })
   remove(@Param('id') id: string): Promise<ApiResponse<ArtistResponseDto>> {
     return this.artistsService.remove(id);
+  }
+
+  @Get(':id/events')
+  @ApiOkResponse({ type: EventsForArtistDto })
+  async getEventsForArtist(
+    @Param('id') id: string,
+  ): Promise<ApiResponse<EventsForArtistDto>> {
+    return await this.artistsService.findEventsForArtist(id);
   }
 }
