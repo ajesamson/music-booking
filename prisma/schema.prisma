@@ -16,7 +16,7 @@ datasource db {
 model Artist {
   id           Int             @id @default(autoincrement())
   uuid         String          @unique @default(uuid())
-  name         String
+  name         String          @unique
   imageUrl     String?
   genre        String?
   bio          String?
