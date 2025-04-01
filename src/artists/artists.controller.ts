@@ -13,8 +13,8 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ArtistResponseDto } from './dto/artist-response.dto';
-import { ApiResponse } from 'src/dto/api-response.dto';
-import { PrismaClientExceptionFilter } from 'src/prisma-client-exception/prisma-client-exception.filter';
+import { ApiResponse } from 'src/common/dto/api-response.dto';
+import { PrismaClientExceptionFilter } from 'src/common/filters/prisma-client-exception/prisma-client-exception.filter';
 
 @Controller('artists')
 @ApiTags('artists')

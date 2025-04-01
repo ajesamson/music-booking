@@ -1,4 +1,4 @@
-import { ApiResponse } from 'src/dto/api-response.dto';
+import { ApiResponse } from 'src/common/dto/api-response.dto';
 
 export function successResponse<T>(message: string, data: T): ApiResponse<T> {
   return new ApiResponse<T>(true, message, data, null);
