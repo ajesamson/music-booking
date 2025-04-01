@@ -1,10 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateArtistDto {
   @IsString()
-  @MaxLength(45)
-  @MinLength(1)
+  @IsNotEmpty({ message: 'Artist name is required' })
   @ApiProperty()
   name: string;
 
