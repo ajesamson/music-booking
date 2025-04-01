@@ -17,6 +17,11 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
       case 'P2002':
         response.status(HttpStatus.CONFLICT).json(errorResponse(message));
         break;
+      case 'P2003':
+        response
+          .status(HttpStatus.BAD_REQUEST)
+          .json(errorResponse('Invalid foreign key constraint'));
+        break;
       default:
         super.catch(exception, host);
     }
