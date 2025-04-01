@@ -46,6 +46,8 @@ model Event {
   updatedAt   DateTime         @updatedAt
   artists     ArtistOnEvent[]
   bookings    BookingOnEvent[]
+
+  @@unique([title, date, venue])
 }
 
 model ArtistOnEvent {
