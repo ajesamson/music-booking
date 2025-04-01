@@ -56,7 +56,11 @@ export class ArtistsService {
   }
 
   async findOne(id: string): Promise<ApiResponse<ArtistResponseDto>> {
-    const artist = await this.getArtistId(id);
+    const artist = await this.databaseService.artist.findUnique({
+      where: {
+        uuid: id,
+      },
+    });
 
     if (!artist) {
       throw new NotFoundException(
