@@ -11,6 +11,7 @@ async function bootstrap() {
     .setTitle('Music Booking')
     .setDescription('A music booking api implementation')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
