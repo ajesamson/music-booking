@@ -87,7 +87,7 @@ model BookingOnEvent {
 model User {
   id       Int       @id @default(autoincrement())
   uuid     String    @unique @default(uuid())
-  email    String
+  email    String    @unique
   password String
   profile  Profile?
   role     Role      @default(CUSTOMER)
