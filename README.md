@@ -45,3 +45,25 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Design Considerations
+
+### Database
+SQLite was used for setup simplicity.
+
+### Authentication
+Endpoint for password reset was not provided 
+
+### Architecture
+- An event is only owned by one artist though another artist could be invited
+- It has been assumed that there would not be race condition when booking tickets for simplicity. This would not hold for popular events. To cater for that if time permits, i would integrated pub/sub with redis by pushing booking request first to redis until payment is completed. Each ticket without payment completion within a given time-frame would be released and booking canceled. Other-wise, request is saved to booking table
+
+
+## Todo
+- Add search in ELK stack
+- input validation especially of missing required input
+- general database error handling
+- adding filters to queries
+- Make event price return type a decimal instead of string
+- Add pagination 
+- Add jwt token refresh and Http-only cookie

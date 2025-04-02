@@ -31,22 +31,21 @@ model Artist {
 }
 
 model Event {
-  id             Int              @id @default(autoincrement())
-  uuid           String           @unique @default(uuid())
-  title          String
-  description    String?
-  date           DateTime
-  venue          String
-  capacity       Int
-  address        String?
-  city           String
-  price          Decimal
-  eventUrl       String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  artists        ArtistOnEvent[]
-  bookings       Booking[]
-  BookingOnEvent BookingOnEvent[]
+  id          Int             @id @default(autoincrement())
+  uuid        String          @unique @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  venue       String
+  capacity    Int
+  address     String?
+  city        String
+  price       Decimal
+  eventUrl    String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  artists     ArtistOnEvent[]
+  bookings    Booking[]
 
   @@unique([title, date, venue])
 }
@@ -61,30 +60,20 @@ model ArtistOnEvent {
 }
 
 model Booking {
-  id             Int              @id @default(autoincrement())
-  uuid           String           @unique @default(uuid())
-  date           DateTime
-  status         BookingStatus    @default(PENDING)
-  seats          Int
-  paymentAmount  Decimal
-  paymentStatus  PaymentStatus    @default(PENDING)
-  paymentId      String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  event          Event            @relation(fields: [eventId], references: [id], onDelete: Restrict)
-  eventId        Int
-  user           User             @relation(fields: [userId], references: [id], onDelete: Restrict)
-  userId         Int
-  BookingOnEvent BookingOnEvent[]
-}
-
-model BookingOnEvent {
-  booking   Booking @relation(fields: [bookingId], references: [id])
-  bookingId Int // relation scalar field (used in the `@relation` attribute above)
-  event     Event   @relation(fields: [eventId], references: [id])
-  eventId   Int // relation scalar field (used in the `@relation` attribute above)
-
-  @@id([bookingId, eventId])
+  id            Int           @id @default(autoincrement())
+  uuid          String        @unique @default(uuid())
+  date          DateTime
+  status        BookingStatus @default(PENDING)
+  seats         Int
+  paymentAmount Decimal
+  paymentStatus PaymentStatus @default(PENDING)
+  paymentId     String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  event         Event         @relation(fields: [eventId], references: [id], onDelete: Restrict)
+  eventId       Int
+  user          User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId        Int
 }
 
 model User {
