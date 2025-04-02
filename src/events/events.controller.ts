@@ -18,7 +18,7 @@ import { ApiResponse } from 'src/common/dto/api-response.dto';
 import { CreateArtistOnEventDto } from './dto/create-artist-on-event.dto';
 
 @Controller('events')
-@ApiTags('events')
+@ApiTags('Events')
 @UseFilters(PrismaClientExceptionFilter)
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}

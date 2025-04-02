@@ -18,7 +18,7 @@ import { PrismaClientExceptionFilter } from 'src/common/filters/prisma-client-ex
 import { EventsForArtistDto } from './dto/events-for-artist.dto';
 
 @Controller('artists')
-@ApiTags('artists')
+@ApiTags('Artists')
 @UseFilters(PrismaClientExceptionFilter)
 export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
