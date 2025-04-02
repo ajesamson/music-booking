@@ -11,9 +11,6 @@ GitHub repo with well-structured API endpoints (REST or GraphQL), database schem
 ### Key Skills Assessed: 
 API Design, Security, Scalability, Database Architecture.
 
-### Benchmark Score: 
-90/100
-
 ## Project setup
 
 ```bash
@@ -32,27 +29,13 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
 ## Design Considerations
 
 ### Database
 SQLite was used for setup simplicity.
 
 ### Authentication
-Endpoint for password reset was not provided 
+- Endpoint for password reset was not provided 
 
 ### Architecture
 - An event is only owned by one artist though another artist could be invited
@@ -61,9 +44,9 @@ Endpoint for password reset was not provided
 
 ## Todo
 - Add search in ELK stack
-- input validation especially of missing required input
-- general database error handling
-- adding filters to queries
+- Input validation especially of missing required input
+- General database error handling
+- Adding filters to queries
 - Make event price return type a decimal instead of string
 - Add pagination 
 - Add jwt token refresh and Http-only cookie
