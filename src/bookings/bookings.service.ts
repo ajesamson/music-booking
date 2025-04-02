@@ -81,10 +81,23 @@ export class BookingsService {
     });
 
     return successResponse(
-      'User bookings retrieved successfully',
-      plainToInstance(BookingResponseDto, bookings, {
-        excludeExtraneousValues: true,
-      }),
+      'Bookings retrieved successfully',
+      plainToInstance(
+        BookingResponseDto,
+        bookings.map((bk) => {
+          return {
+            ...bk,
+            paymentAmount: bk.paymentAmount.toString(),
+            event: {
+              ...bk.event,
+              price: bk.event.price.toString(),
+            },
+          };
+        }),
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
     );
   }
 
@@ -106,10 +119,23 @@ export class BookingsService {
     });
 
     return successResponse(
-      'Artist bookings retrieved successfully',
-      plainToInstance(UserBookingResponseDto, bookings, {
-        excludeExtraneousValues: true,
-      }),
+      'Bookings retrieved successfully',
+      plainToInstance(
+        BookingResponseDto,
+        bookings.map((bk) => {
+          return {
+            ...bk,
+            paymentAmount: bk.paymentAmount.toString(),
+            event: {
+              ...bk.event,
+              price: bk.event.price.toString(),
+            },
+          };
+        }),
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
     );
   }
 
@@ -128,11 +154,26 @@ export class BookingsService {
       },
     });
 
+    // Note: The map implementation is not effective but no time
+    // to investigate why plainToInstance @Transform is failing
     return successResponse(
-      'Artist bookings retrieved successfully',
-      plainToInstance(UserBookingResponseDto, bookings, {
-        excludeExtraneousValues: true,
-      }),
+      'Bookings retrieved successfully',
+      plainToInstance(
+        BookingResponseDto,
+        bookings.map((bk) => {
+          return {
+            ...bk,
+            paymentAmount: bk.paymentAmount.toString(),
+            event: {
+              ...bk.event,
+              price: bk.event.price.toString(),
+            },
+          };
+        }),
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
     );
   }
 
@@ -149,9 +190,20 @@ export class BookingsService {
 
     return successResponse(
       'Artist bookings retrieved successfully',
-      plainToInstance(BookingResponseDto, booking, {
-        excludeExtraneousValues: true,
-      }),
+      plainToInstance(
+        BookingResponseDto,
+        {
+          ...booking,
+          paymentAmount: booking?.paymentAmount.toString(),
+          event: {
+            ...booking?.event,
+            price: booking?.event?.price.toString(),
+          },
+        },
+        {
+          excludeExtraneousValues: true,
+        },
+      ),
     );
   }
 }
