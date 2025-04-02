@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -16,6 +17,10 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { EventResponseDto } from './dto/event-response.dto';
 import { ApiResponse } from 'src/common/dto/api-response.dto';
 import { CreateArtistOnEventDto } from './dto/create-artist-on-event.dto';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/auth/decorator/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/role.guards';
 
 @Controller('events')
 @ApiTags('Events')
@@ -23,6 +28,8 @@ import { CreateArtistOnEventDto } from './dto/create-artist-on-event.dto';
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Post()
   @ApiCreatedResponse({ type: EventResponseDto })
   async create(
@@ -31,12 +38,16 @@ export class EventsController {
     return await this.eventsService.create(createEventDto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Get()
   @ApiOkResponse({ type: EventResponseDto, isArray: true })
   async findAll(): Promise<ApiResponse<EventResponseDto[]>> {
     return await this.eventsService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Get(':id')
   @ApiOkResponse({ type: EventResponseDto })
   async findOne(
@@ -45,6 +56,8 @@ export class EventsController {
     return await this.eventsService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Patch(':id')
   @ApiOkResponse({ type: EventResponseDto })
   async update(
@@ -54,6 +67,8 @@ export class EventsController {
     return await this.eventsService.update(id, updateEventDto);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   @ApiOkResponse({ type: EventResponseDto })
   async remove(
@@ -62,6 +77,8 @@ export class EventsController {
     return await this.eventsService.remove(id);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Post(':id/artists')
   @ApiOkResponse({ type: EventResponseDto })
   async addArtistsToEvent(
@@ -74,6 +91,8 @@ export class EventsController {
     );
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id/artists/:artistId')
   @ApiOkResponse({ type: EventResponseDto })
   async removeArtistFromEvent(
