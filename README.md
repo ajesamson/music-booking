@@ -50,3 +50,4 @@ SQLite was used for setup simplicity.
 - Make event price return type a decimal instead of string
 - Add pagination 
 - Add jwt token refresh and Http-only cookie
+- Implement soft delete
