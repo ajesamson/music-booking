@@ -112,6 +112,14 @@ export class EventsService {
     );
   }
 
+  async getEvent(uuid: string): Promise<Event | null> {
+    return await this.databaseService.event.findUnique({
+      where: {
+        uuid,
+      },
+    });
+  }
+
   async findOne(id: string): Promise<ApiResponse<EventResponseDto>> {
     const event = await this.databaseService.event.findUnique({
       where: {
