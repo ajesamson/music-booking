@@ -3,10 +3,10 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { DatabaseService } from 'src/database/database.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { UsersService } from 'src/users/users.service';
+import { UsersModule } from 'src/users/users.module';
+import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
   imports: [
@@ -15,15 +15,11 @@ import { UsersService } from 'src/users/users.service';
       secret: process.env.JWT_SECRET || 'default_secret',
       signOptions: { expiresIn: '1h' },
     }),
+    UsersModule,
+    DatabaseModule,
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    DatabaseService,
-    LocalStrategy,
-    JwtStrategy,
-    UsersService,
-  ],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
