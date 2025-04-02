@@ -99,7 +99,6 @@ model Profile {
   uuid        String  @unique @default(uuid())
   firstName   String
   lastName    String
-  country     String
   phoneNumber String?
   User        User    @relation(fields: [userId], references: [id])
   userId      Int     @unique
