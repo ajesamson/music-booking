@@ -29,6 +29,10 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+## Swagger Endpoint
+http://localhost:4000/api/
+
 ## Design Considerations
 
 ### Database
